@@ -1,10 +1,11 @@
 import streamlit as st
 import plotly.express as px
+from main_backend import snatch_data
 
 st.set_page_config(layout='centered')
 
 st.write("<h1><center> BeamWeather® </center></h1>", unsafe_allow_html=True)
-region = st.text_input("Region")
+region = st.text_input("Region / Place / Country")
 no_of_days = st.slider("Select Number Of Days", min_value=1, max_value=5,
                        help='Slide and Adjust to premute the number of days.')
 options = st.selectbox("View the Data in the format of", ('Temperature', 'Atmospheric'))
@@ -20,13 +21,12 @@ elif region and options == 'Temperature':
     elif no_of_days != 1:
         st.subheader(f"{options} for the next {no_of_days} days in {region}")
 
-def get_data(the_days):
-    date = ['2022-25-10', '2022-26-10', '2022-27-10']
-    temperatures = [10, 11, 15]
-    dynamic_temp = [the_days * i for i in temperatures]
-    return date, dynamic_temp
+snatch_data(region, no_of_days, options)
 
-dates, dy_temps = get_data(no_of_days)
+# 'name'
+# 'country'
+# 'population'
+# 'id'
 
-figure = px.line(x=dates, y=dy_temps, labels={"x":"Date", "y":"Temperature (C°)"})
+figure = px.line(labels={"x":"Date", "y":"Temperature (C°)"})
 st.plotly_chart(figure)
