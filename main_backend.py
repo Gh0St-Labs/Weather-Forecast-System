@@ -9,15 +9,8 @@ def snatch_data(place, days=None, type=None):
     nr_values = 8 * days
     filtered_data = filtered_data[:nr_values]
 
-    if type == 'Temperature':
-        filtered_data = [temps['main']['temp'] for temps in filtered_data]
-
-    if type == 'Atmospheric':
-        filtered_data = [atmos['weather'][0]['main'] for atmos in filtered_data]
 
     return filtered_data
-
-
 
 if __name__ == "__main__":
     print(snatch_data("London", days=3, type='Temperature'))
