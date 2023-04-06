@@ -27,21 +27,24 @@ elif region and options == 'Temperature':
 # 'country'
 # 'population'
 # 'id'
-if region:
-    filtered_data = snatch_data(region, no_of_days)
 
-    if options == 'Temperature':
-        temperature_data = [temps['main']['temp'] / 10 for temps in filtered_data]
-        dates = [a_date['dt_txt'] for a_date in filtered_data]
-        figure = px.line(x=dates, y=temperature_data,labels={"x":"Date", "y":"Temperature (C°)"})
-        st.plotly_chart(figure)
+try:
+    if region:
+        filtered_data = snatch_data(region, no_of_days)
 
-    if options == 'Atmospheric':
-        atmospheric_data = [atmos['weather'][0]['main'] for atmos in filtered_data]
-        the_images = {"Clear": "images\\snowy.png", "Clouds": "images\\clouds.png", "Rain": "images\\rain.png",
-                      "Snow": "images\\snowy.png"}
-        image_paths = [the_images[the_atmosphere] for the_atmosphere in atmospheric_data]
-        dates = [a_date['dt_txt'] for a_date in filtered_data]
-        st.image(image_paths, width=80, caption=dates)
+        if options == 'Temperature':
+            temperature_data = [temps['main']['temp'] / 10 for temps in filtered_data]
+            dates = [a_date['dt_txt'] for a_date in filtered_data]
+            figure = px.line(x=dates, y=temperature_data,labels={"x":"Date", "y":"Temperature (C°)"})
+            st.plotly_chart(figure)
 
+        if options == 'Atmospheric':
+            atmospheric_data = [atmos['weather'][0]['main'] for atmos in filtered_data]
+            the_images = {"Clear": "images\\snowy.png", "Clouds": "images\\clouds.png", "Rain": "images\\rain.png",
+                          "Snow": "images\\snowy.png"}
+            image_paths = [the_images[the_atmosphere] for the_atmosphere in atmospheric_data]
+            dates = [a_date['dt_txt'] for a_date in filtered_data]
+            st.image(image_paths, width=80, caption=dates)
+except KeyError:
+    st.info(f"'{region}' does not exist. Please Enter a Valid State or a Region.")
 
